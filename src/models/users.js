@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
+const uniqueValidator = require('mongoose-unique-validator')
 const { Schema, model } = mongoose;
 
 
@@ -29,7 +30,7 @@ const UserSchema = new Schema({
   timestamps: true
 })
 
-
+UserSchema.plugin(uniqueValidator, { message: 'Este email ya está registrado'})
 
 UserSchema.pre('save', function (next) {
   console.log('-------antes---------')

@@ -1,20 +1,31 @@
-const express = require('express')
-const router = express.Router()
-const UserModel = require('../models/users')
-const UserService = require('../services/users')
+const express = require("express");
+const router = express.Router();
+const UserModel = require("../models/users");
+const UserService = require("../services/users");
 
-const userService = new UserService(UserModel)
+const userService = new UserService(UserModel);
 
+router.get("/me", async (req, res) => {
+  const sessionUser = req.user;
 
-router.post('/', async (req, res) => {
+  if (!sessionUser) {
+    return res.status(403).send({
+      message: "No tienes acceso"
+    });
+  }
 
-  console.log('req')
-  const body = req.body
-  const user = await userService.create(body)
+  res.send({
+    username: sessionUser.username,
+    email: sessionUser.email
+  });
+});
 
-  res.status(201).send(user)
-})
+router.post("/", async (req, res) => {
+  console.log("req");
+  const body = req.body;
+  const user = await userService.create(body);
 
+  res.status(201).send(user);
+});
 
-
-module.exports = router
+module.exports = router;
