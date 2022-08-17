@@ -11,7 +11,7 @@ const userService = new UserService(UserModel);
 const authService = new AuthService(userService);
 const JWT_SECRET = process.env.JWT_SECRET;
 
-router.post("login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await authService.login(email, password);
